@@ -19,15 +19,27 @@ This guide demonstrates a **File System Backup (FSB)** using **Kopia** with **Ve
     - `nginx.yaml`
     - `busybox.yaml`
     - `webserver.yaml`
-5. Confirm the storage class is available:
-    ```bash
-    kubectl get sc
-    ```
-    Example output:
-    ```
-    NAME                PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
-    gcp-fast (default) pd.csi.storage.gke.io   Delete          WaitForFirstConsumer   true                   578d
-    ```
+5. Check available namespaces:  
+   ```bash
+   kubectl get ns | grep gcp-in
+   ```
+
+---
+
+## Modify StorageClass & Namespace
+
+Verify storage class:  
+```bash
+kubectl get sc
+```
+
+Sample output:
+```
+NAME         PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+gcp-fast     pd.csi.storage.gke.io   Delete          WaitForFirstConsumer   true                   578d
+```
+
+Update `namespace` and `storageClassName` in the YAML files accordingly.
 
 ---
 
