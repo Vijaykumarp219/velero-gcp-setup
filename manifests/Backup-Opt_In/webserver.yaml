@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: webserver-pvc
+  namespace: gcp-in
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: gcp-fast
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver-deployment
+  namespace: gcp-in
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webserver
+  template:
+    metadata:
+      labels:
+        app: webserver
+      annotations:
+        backup.velero.io/backup-volumes: webserver-storage
+    spec:
+      containers:
+      - name: webserver
+        image: httpd:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: webserver-storage
+          mountPath: /usr/local/apache2/htdocs/
+      volumes:
+      - name: webserver-storage
+        persistentVolumeClaim:
+          claimName: webserver-pvc
