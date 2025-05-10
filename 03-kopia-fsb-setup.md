@@ -6,9 +6,9 @@
 ```yaml
 
 metadata:
-	namespace: velero
-	annotations:
-	backup.velero.io/backup-volumes: <volume name>
+   namespace: velero
+   annotations:
+     backup.velero.io/backup-volumes: <volume name>
 
 ```
 
@@ -17,9 +17,9 @@ metadata:
 ```yaml
 
 metadata:
-	namespace: velero
-	annotations:
-	backup.velero.io/backup-volumes-excludes: <volume name>
+   namespace: velero
+   annotations:
+     backup.velero.io/backup-volumes-excludes: <volume name>
 
 ```
 ## Global Opt-out:
@@ -27,7 +27,7 @@ metadata:
 ```yaml
 
 metadata:
-	name: global
-	namespace: velero
+   name: global
+   namespace: velero
 
 ```
