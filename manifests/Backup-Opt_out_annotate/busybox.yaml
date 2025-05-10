@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox-deployment
+  namespace: gcp
+  labels:
+    app: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+      annotations:
+        backup.velero.io/backup-volumes-excludes: busybox-storage
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:latest
+        command: ["/bin/sh", "-c", "sleep 3600"]
+        volumeMounts:
+        - name: busybox-storage
+          mountPath: /data
+      volumes:
+      - name: busybox-storage
+        persistentVolumeClaim:
+          claimName: busybox-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: busybox-pvc
+  namespace: gcp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: gcp-fast
